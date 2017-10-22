@@ -23,6 +23,7 @@ class LottoApp extends Component {
       lastDraw: null,
       drawing: false,
       fillingTicket: false,
+      redeemingPrize: false
     };
   }
 
@@ -125,6 +126,8 @@ class LottoApp extends Component {
         this.handleCumulationEvent(event);
       } else if (event.event === 'TicketFilled') {
         this.handleTicketFilledEvent(event);
+      } else if (event.event === 'PrizeRedeemed') {
+        this.handlePrizeRedeemedEvent(event);
       } else {
         console.error('Unknown event', event);
       }
@@ -188,6 +191,12 @@ class LottoApp extends Component {
     }
   }
 
+  handlePrizeRedeemedEvent (event) {
+    if (event.args.account === this.state.account) {
+      this.setState({ redeemingPrize: false});
+    }
+  }
+
   onFillTicket = () => {
     const number = parseInt(prompt('Enter a number'), 10);
 
@@ -205,6 +214,11 @@ class LottoApp extends Component {
     this.state.instance.draw({
       gas: 200000,
     });
+  }
+
+  onRedeemPrize = () => {
+    this.setState({ redeemingPrize: true });
+    this.state.instance.redeemPrize();
   }
 
   render() {
@@ -226,8 +240,10 @@ class LottoApp extends Component {
           lastBlockNumber={this.state.lastBlock}
           onFillTicket={this.onFillTicket}
           onDraw={this.onDraw}
+          onRedeemPrize={this.onRedeemPrize}
           fillingTicket={this.state.fillingTicket}
           drawing={this.state.drawing}
+          redeemingPrize={this.state.redeemingPrize}
           />
       </div>
     );
@@ -290,8 +306,8 @@ const LastDrawComponent = ({ lastDraw }) => {
 const LottoComponent = ({
   currentBlockNumber, lastBlockNumber,
   maxNumber, prize, tickets, fee,
-  onFillTicket, onDraw, fillingTicket,
-  drawing,
+  onFillTicket, onDraw, onRedeemPrize, fillingTicket,
+  drawing, redeemingPrize
 }) => {
   if (!maxNumber) {
     return (<div>Loading contract information...</div>);
@@ -333,11 +349,12 @@ const LottoComponent = ({
       <div>
         {balls}
         {fillingTicket ? (<div>Filling ticket...</div>) : null}
+        {redeemingPrize ? (<div>Redeeming prize...</div>) : null}
       </div>
       </div>
       <hr/>
       <button className="button-large" onClick={onFillTicket}>Place a bet</button>
-
+      <button className="button-large" onClick={onRedeemPrize}>Redeem prize</button>
       <button className="button-large float-right" disabled={!drawEnabled} onClick={onDraw}>
           {drawing ? "Drawing..." : "Draw"}
       </button>
