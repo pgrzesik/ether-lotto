@@ -83,6 +83,11 @@ contract MicroLotto {
         }
     }
 
+    function redeemPrize() public updatesBlock {
+        require(block.number > lastBlock + 1);
+        // TODO
+    }
+
     function prize() public constant returns (uint) {
         return accumulatedValue * (1 ether - lottoFeePercent) / 1 ether;
     }
