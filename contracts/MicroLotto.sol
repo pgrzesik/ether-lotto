@@ -86,7 +86,7 @@ contract MicroLotto {
 
     function redeemPrize() public updatesBlock {
         require(block.number > lastBlock + 1);
-        // TODO
+        // TODO: Implementation
         PrizeRedeemed(msg.sender);
     }
 
