@@ -30,7 +30,6 @@ contract MicroLotto {
 
     function MicroLotto(
         Random _random,
-        uint _ticketFee,
         uint _lottoFeePercent,
         uint _maxNumber
     )
@@ -39,7 +38,7 @@ contract MicroLotto {
         require(_maxNumber >= 2);
 
         random = _random;
-        ticketFee = _ticketFee;
+        ticketFee = 100000000000000000;  // Make it configurable during deployment
         lottoFeePercent = _lottoFeePercent;
         maxNumber = _maxNumber;
     }
