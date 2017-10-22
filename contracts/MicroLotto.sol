@@ -22,6 +22,7 @@ contract MicroLotto {
     event TicketFilled(address indexed account, uint selectedNumber);
     event Won(address indexed account, uint selectedNumber, uint profit);
     event Cumulation(uint drawnNumber, uint value);
+    event PrizeRedeemed(address indexed account);
 
     modifier updatesBlock() {
         _;
@@ -86,6 +87,7 @@ contract MicroLotto {
     function redeemPrize() public updatesBlock {
         require(block.number > lastBlock + 1);
         // TODO
+        PrizeRedeemed(msg.sender);
     }
 
     function prize() public constant returns (uint) {
