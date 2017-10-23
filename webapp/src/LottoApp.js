@@ -382,7 +382,7 @@ const LottoComponent = ({
         </div>
         <div className="column column-25">
           <button className="button-large" onClick={onOwnerCollect} disabled={!ownerCollectEnabled}>
-            Owner payout
+            Owner collect
           </button>
         </div>
         <div className="column column-25">
