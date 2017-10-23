@@ -15,8 +15,10 @@ const MAX_NUMBER = 10;
 const TICKET_FEE = 0.1;
 const TICKET_FEE_WEI = web3.toWei(TICKET_FEE, 'ether');
 
-const LOTTO_FEE_PERCENT = web3.toWei(0.01, 'ether');
+const LOTTO_FEE_PERCENT = 0.01;
+const LOTTO_FEE_PERCENT_WEI = web3.toWei(LOTTO_FEE_PERCENT, 'ether');
 
+const EXPECTED_PRIZE = TICKET_FEE_WEI - (LOTTO_FEE_PERCENT * TICKET_FEE_WEI);
 
 contract(`MicroLotto with max number of ${MAX_NUMBER} and fee percent ${LOTTO_FEE_PERCENT}`, accounts => {
   const OWNER = accounts[0];
@@ -31,7 +33,7 @@ contract(`MicroLotto with max number of ${MAX_NUMBER} and fee percent ${LOTTO_FE
       from: OWNER
     });
 
-    lotto = await MicroLotto.new(random.address, LOTTO_FEE_PERCENT, MAX_NUMBER, {
+    lotto = await MicroLotto.new(random.address, LOTTO_FEE_PERCENT_WEI, MAX_NUMBER, {
       from: OWNER,
     });
 
@@ -52,6 +54,11 @@ contract(`MicroLotto with max number of ${MAX_NUMBER} and fee percent ${LOTTO_FE
       assert.ok(event);
       assert.equal(event.args.account, PLAYER);
       assertNumberEqual(event.args.selectedNumber, EXPECTED_NUMBER);
+    });
+
+    it(`Should have prize equal to ${EXPECTED_PRIZE}`, async () => {
+      const prize = await lotto.prize();
+      assertNumberEqual(prize, EXPECTED_PRIZE);
     });
 
   });
