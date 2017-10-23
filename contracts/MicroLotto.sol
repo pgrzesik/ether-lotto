@@ -11,6 +11,7 @@ contract MicroLotto {
         address account;
     }
 
+    address public owner;
     Random public random;
     uint public ticketFee;
     uint public lottoFeePercent;
@@ -39,6 +40,7 @@ contract MicroLotto {
     {
         require(_maxNumber >= 2);
 
+        owner = msg.sender;
         random = _random;
         ticketFee = 100000000000000000;  // TODO: Make it configurable during deployment
         lottoFeePercent = _lottoFeePercent;
