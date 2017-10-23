@@ -22,7 +22,8 @@ contract MicroLotto {
     event TicketFilled(address indexed account, uint selectedNumber);
     event Won(address indexed account, uint selectedNumber, uint profit);
     event Cumulation(uint drawnNumber, uint value);
-    event PrizeRedeemed(address indexed account);
+    event PrizeRedeemed(address indexed account, uint value);
+    event OwnerCollected(uint value);
 
     modifier updatesBlock() {
         _;
@@ -39,7 +40,7 @@ contract MicroLotto {
         require(_maxNumber >= 2);
 
         random = _random;
-        ticketFee = 100000000000000000;  // Make it configurable during deployment
+        ticketFee = 100000000000000000;  // TODO: Make it configurable during deployment
         lottoFeePercent = _lottoFeePercent;
         maxNumber = _maxNumber;
     }
@@ -84,10 +85,18 @@ contract MicroLotto {
         }
     }
 
+    function ownerCollect() public updatesBlock {
+        require(block.number > lastBlock + 1);
+        // TODO: Implementation
+        // Make sure that only owner can call this method
+        // Make sure that correct amount can be collected
+        OwnerCollected(0);
+    }
+ 
     function redeemPrize() public updatesBlock {
         require(block.number > lastBlock + 1);
         // TODO: Implementation
-        PrizeRedeemed(msg.sender);
+        PrizeRedeemed(msg.sender, 0);
     }
 
     function prize() public constant returns (uint) {
