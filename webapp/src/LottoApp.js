@@ -353,11 +353,22 @@ const LottoComponent = ({
       </div>
       </div>
       <hr/>
-      <button className="button-large" onClick={onFillTicket}>Place a bet</button>
-      <button className="button-large" onClick={onRedeemPrize}>Redeem prize</button>
-      <button className="button-large float-right" disabled={!drawEnabled} onClick={onDraw}>
-          {drawing ? "Drawing..." : "Draw"}
-      </button>
+      <div className="row">
+        <div className="column column-25">
+          <button className="button-large" onClick={onFillTicket}>Place a bet</button>
+        </div>
+        <div className="column column-25">
+          <button className="button-large" onClick={onRedeemPrize}>Redeem prize</button>
+        </div>
+        <div className="column column-25">
+          <button className="button-large" disabled={true}>Owner payout</button>
+        </div>
+        <div className="column column-25">
+          <button className="button-large" disabled={!drawEnabled} onClick={onDraw}>
+              {drawing ? "Drawing..." : "Draw"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
